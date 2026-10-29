@@ -4,13 +4,17 @@
 <% else %>
       <% @cart_items.each do |cart_item| %>
         <hr>
-        <p><%= cart_item.product.name %></p>
-        <p>価格: <%= cart_item.product.price %></p>
+        <% if cart_item.product %>
+          <p><%= cart_item.product.name %></p>
+          <p>価格: <%= cart_item.product.price %></p>
+        <% else %>
+          <p>この商品は削除されています。</p>
+        <% end %>
         <p>数量: <%= cart_item.qty %></p>
         <p><%= link_to 'カートから削除', cartitem_path(cart_item), data: { turbo_method: :delete } %></p>
       <% end %>
       <hr>
-      <% total_price = @cart_items.sum { |cart_item| cart_item.product.price * cart_item.qty } %>
+      <% total_price = @cart_items.sum { |cart_item| cart_item.product ? cart_item.product.price.to_i * cart_item.qty.to_i : 0 } %>
       <p>合計金額：<%= total_price %>円</p>
 <% end %>
 <%= link_to '商品一覧へ戻る', products_path %>

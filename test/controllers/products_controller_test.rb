@@ -37,4 +37,28 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to products_path
   end
+
+  test "destroy deletes a product" do
+    product = products(:one)
+
+    assert_difference "Product.count", -1 do
+      delete product_path(product)
+    end
+
+    assert_redirected_to products_path
+  end
+
+  test "destroy removes the product from carts" do
+    product = Product.create!(name: "Temporary", price: 100)
+    cart_item = CartItem.create!(
+      product: product,
+      cart: Cart.create!,
+      qty: 1
+    )
+
+    delete product_path(product)
+
+    assert_redirected_to products_path
+    assert_not CartItem.exists?(cart_item.id)
+  end
 end
