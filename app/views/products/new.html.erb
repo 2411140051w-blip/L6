@@ -1,0 +1,12 @@
+<h3>新規登録</h3>
+<%= form_with model: @product do |p| %>
+  <p>
+  <%= p.label :name, '商品名' %>
+  <%= p.text_field :name %>
+  </p>
+  <p>
+  <%= p.label :price, '価格' %>
+  <%= p.text_field :price %>
+  </p>
+  <%= p.submit '登録' %>
+<% end %>
